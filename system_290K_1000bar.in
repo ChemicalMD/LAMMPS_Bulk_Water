@@ -1,0 +1,24 @@
+# ----------------- Init Section -----------------
+
+include "system.in.init"
+
+# ----------------- Atom Definition Section -----------------
+
+read_data "system.data"
+
+# ----------------- Settings Section -----------------
+
+include "system.in.settings"
+
+# ----------------- Run Section -----------------
+
+# -- Run 1 bar --
+variable Tsim equal 290
+variable Psim equal 1000/1.013
+log log.${Tsim}K.1000bar.lammps
+velocity all create ${Tsim} 12345
+fix NPT all npt temp ${Tsim} ${Tsim} 2000.0 iso ${Psim} ${Psim} 2000.0
+timestep 0.5
+thermo 1000
+thermo_style custom step temp press vol density pe ke etotal enthalpy
+run 40000000
